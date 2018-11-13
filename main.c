@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-void initiate_bingo();   //빙고 테이블을 초기에 만들어줌 
-void print_bingo();   //빙고 테이블 현재 상황을 화면에 출력 
+int initiate_bingo();   //빙고 테이블을 초기에 만들어줌 
+int print_bingo();   //빙고 테이블 현재 상황을 화면에 출력 
 void get_number_byMe();   //내가 빙고 번호 입력 선택 
 void get_number_byCom();   //컴퓨터가 임의로 빙고 번호 선택 
 void process_bingo();   //선택된 숫자를 입력받아서 빙고 테이블 칸을 채움 
@@ -21,12 +21,12 @@ int main()
 	printf("몇 줄의 빙고를 만들면 끝낼까요? ");
 	scanf("%d", &M);
 	
-	print_bingo(N, N);
+	initiate_bingo(N, N);
 	
-	get_number_byMe(); 
+	get_number_byMe();
 }
 
-void print_bingo()
+int initiate_bingo()
 {
 	srand(time(NULL));
 	
@@ -61,7 +61,7 @@ void print_bingo()
 		}
 	}
 	
-
+	//빙고판 출력 
 	for(i=0; i<N; i++)
 	{
 	 	for(j=0; j<N; j++)
@@ -71,23 +71,31 @@ void print_bingo()
 		
 		printf("\n");
 	}
+	
+	return bingo[N][N];
+}
+
+void print_bingo()
+{
+	
 }
 
 void get_number_byMe(int num)   //num은 사용자가 선택한 숫자 
 {
 	int selected_num = -1;   //이미 선택된 숫자(-1로 표시)
-	 
-	printf("숫자를 입력하시오. ");
+	
+	printf("숫자를 선택하시오. ");
 	scanf("%d", &num);
 	
-	if(num = -1)
+	if(num !=-1)
 	{
-		printf("이미 선택된 숫자입니다.");
+		swap(&num, &selected_num);
+		
+		print_bingo();		
 	}
 	else
 	{
-		swap(&num, &selected_num);
-		printf("%d", selected_num);
+		printf("이미 선택된 숫자입니다.");
 	}
 }
 
