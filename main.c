@@ -10,7 +10,7 @@ int print_bingo();   //빙고 테이블 현재 상황을 화면에 출력
 int get_number_byMe();   //내가 빙고 번호 입력 선택  
 int get_number_byCom();   //컴퓨터가 임의로 빙고 번호 선택  
 int process_bingo();   //선택된 숫자를 입력받아서 빙고 테이블 칸을 채움  
-int count_bingo(int bingo[N][N]);   //빙고 테이블이 채운 가로/세로/대각선 줄 수를 계산해서 반환 
+int count_bingo(int bingo[N][N], int count);   //빙고 테이블이 채운 가로/세로/대각선 줄 수를 계산해서 반환 
 void swap();   //선택된 숫자를 -1로 변경 
 
 //user와 computer의 빙고판  
@@ -18,12 +18,14 @@ int user_bingo[N][N];
 int comp_bingo[N][N];
 
 //user와 computer의 빙고 수 변수  
-int user_count;
-int comp_count;
+int user_count = 0;
+int comp_count = 0;
 
 int main()
 {
 	int trial=0;   //turn 세는 변수  
+	
+	srand((unsigned int) time(NULL));
 	
 	initiate_bingo(user_bingo);
 	initiate_bingo(comp_bingo);
@@ -31,6 +33,7 @@ int main()
 	do
 	{
 		print_bingo(user_bingo);
+		print_bingo(comp_bingo);
 	
 		get_number_byMe();
 		
@@ -44,29 +47,42 @@ int main()
 		
 		trial++;
 		
-		count_bingo(user_bingo[N][N]);
-		count_bingo(comp_bingo[N][N]);		
+		count_bingo(user_bingo[N][N], user_count);
+		count_bingo(comp_bingo[N][N], comp_count);		
 	}
 	while((user_count=M) || (comp_count=M));
+	
+	if(user_count = M)
+	{
+		printf("USER WIN");
+	}
+	else if(comp_count = M)
+	{
+		printf("COMPUTER WIN");
+	}
+	
+	printf("trial : %d", trial);
+	
+	return 0;
 }
 
 int initiate_bingo(int bingo[N][N])
 {
 	int i, j;
 	int temp;
-	int count = 1;
+	int integer = 1;
 	
-	srand(time(NULL));
+	srand((unsigned int) time(NULL));
 	 
-	int rand_x = rand() % N;
-	int rand_y = rand() % N;
+	int rand_x = rand() % N + 1;
+	int rand_y = rand() % N + 1;
 	
 	//빙고판에 1~N*N까지의 숫자를 순서대로 채워넣음  
 	for(i=0; i<N; i++)
 	{
 		for(j=0; j<N; j++)
 		{
-			bingo[i][j] = count++;
+			bingo[i][j] = integer++;
 		}
 	}
 	
@@ -118,7 +134,7 @@ int get_number_byMe()
 
 int get_number_byCom()
 {
-	srand(time(NULL));
+	srand((unsigned int) time(NULL));
 	
 	int selected_num;
 	
@@ -129,9 +145,11 @@ int get_number_byCom()
 
 int process_bingo(int selected_num)
 {
-	int completed_num = -1;
+	int completed_num = -1;   //이미 선택된 숫자  
 	
 	swap(&selected_num, &completed_num);
+	
+	print_bingo(bingo[N][N]); 
 }
 
 void swap(int *a, int *b)
@@ -141,4 +159,43 @@ void swap(int *a, int *b)
 	temp = *a;
 	*a = *b;
 	*b = temp;
+}
+
+int count_bingo(int bingo[N][N], int count)
+{
+	int i, j;
+	int sum = 0;
+	
+	//가로 빙고 세기  
+	for(i=0; i<N; i++)
+	{
+		sum += bingo[N][i];
+		
+		if(sum = -5)
+		{
+			count++;
+		}
+	}
+	
+	//세로 빙고 세기  
+	for(i=0; i<N; i++)
+	{
+		sum += bingo[i][N];
+		
+		if(sum = -5)
+		{
+			count++;
+		}
+	}
+	
+	//대각선 빙고 세기  
+	for(i=0; i<N; i++)
+	{
+		sum += bingo[i][i];
+		
+		if(sum = -5)
+		{
+			count++;
+		}
+	}
 }
