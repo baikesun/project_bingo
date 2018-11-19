@@ -1,17 +1,9 @@
 #include <stdio.h> 
 #include <stdlib.h> 
 #include <time.h> 
- 
+
 #define N 5 
 #define M 2 
- 
-int initiate_bingo(int bingo[N][N]);   //빙고 테이블을 초기에 만들어줌  
-int print_bingo(int bingo[N][N]);   //빙고 테이블 현재 상황을 화면에 출력  
-int get_number_byMe();   //내가 빙고 번호 입력 선택  
-int get_number_byCom();   //컴퓨터가 임의로 빙고 번호 선택  
-int process_bingo();   //선택된 숫자를 입력받아서 빙고 테이블 칸을 채움  
-int count_bingo(int bingo[N][N], int count);   //빙고 테이블이 채운 가로/세로/대각선 줄 수를 계산해서 반환 
-void swap(int *a, int *b);
  
 //user와 computer의 빙고판 변수  
 int user_bingo[N][N];
@@ -43,21 +35,16 @@ int main()
 		process_bingo(comp_bingo, selected_num);
 	
 		selected_num = get_number_byCom();
-		
-		printf("\ncomputer number : %d\n", selected_num);
-		
-		//여기부터 말썽  
+		 
 		process_bingo(user_bingo, selected_num);
 		process_bingo(comp_bingo, selected_num);
 		
-		print_bingo(user_bingo);
-		printf("\n");
-		print_bingo(comp_bingo);
+		count_bingo(&user_bingo[N][N], user_count);
+		count_bingo(&comp_bingo[N][N], comp_count);	
 		
 		trial++;
 		
-		count_bingo(user_bingo[N][N], user_count);
-		count_bingo(comp_bingo[N][N], comp_count);		
+		printf("\n");
 	}
 	while((user_count != M) && (comp_count != M));
 	
@@ -161,7 +148,6 @@ int get_number_byCom()
 int process_bingo(int bingo[N][N], int selected_num)
 {
 	int i, j;
-	int completed_num = -1;
 	
 	for(i=0; i<N; i++)
 	{
@@ -169,55 +155,65 @@ int process_bingo(int bingo[N][N], int selected_num)
 		{
 			if(bingo[i][j] == selected_num)
 			{
-				swap(&selected_num, &completed_num);
+				bingo[i][j] = -1;
 			}
 		}
 	}
 }
 
-void swap(int *a, int *b)
-{
-	int temp;
-	
-	temp = *a;
-	*a = *b;
-	*b = temp;
-}
-int count_bingo(int bingo[N][N], int count)
+int count_bingo(int *bingo[N][N], int count)
 {
 	int i, j;
-	int sum = 0;   //가로, 세로, 대각선의 숫자의 합이 -5가 되면 빙고  
+	int sum;   //가로, 세로, 대각선의 숫자의 합이 -5가 되면 빙고  
 	
 	//가로 빙고 세기  
 	for(i=0; i<N; i++)
 	{
-		sum += bingo[N][i];
+		sum = 0;
 		
-		if(sum = -5)
+		for(j=0; j<N; j++)
 		{
-			count++;
+			sum += &bingo[j][i];
+			
+			if(sum == (-1)*N)
+			{
+				count++;
+			}
 		}
 	}
 	
 	//세로 빙고 세기  
 	for(i=0; i<N; i++)
 	{
-		sum += bingo[i][N];
+		sum = 0;
 		
-		if(sum = -5)
+		for(j=0; j<N; j++)
 		{
-			count++;
+			sum += &bingo[i][j];
+			
+			if(sum == (-1)*N)
+			{
+				count++;
+			}
 		}
 	}
 	
 	//대각선 빙고 세기  
 	for(i=0; i<N; i++)
 	{
-		sum += bingo[i][i];
-		
-		if(sum = -5)
+		for(j=0; j<N; j++)
 		{
-			count++;
+			if(i == j)
+			{
+				sum += &bingo[i][j];
+				
+				if(sum == (-1)*N)
+				{
+					count++;
+				}
+			}
 		}
 	}
+	
+	printf("%d ", count);
 }
