@@ -2,19 +2,14 @@
 #include <stdlib.h> 
 #include <time.h> 
 
+#include "head.h" 
+
 #define N 5 
 #define M 2 
 
 //user와 computer의 빙고판 변수  
 int user_bingo[N][N];
 int comp_bingo[N][N];
-
-int initiate_bingo(int bingo[N][N]);   //빙고 테이블을 초기에 만들어줌  
-int print_bingo(int bingo[N][N]);   //빙고 테이블 현재 상황을 화면에 출력  
-int get_number_byMe();   //내가 빙고 번호 입력 선택  
-int get_number_byCom();   //컴퓨터가 임의로 빙고 번호 선택  
-void process_bingo(int bingo[N][N], int selected_num);   //선택된 숫자를 입력받아서 빙고 테이블 칸을 채움  
-void count_bingo(int bingo[N][N], int* count);   //빙고 테이블이 채운 가로/세로/대각선 줄 수를 계산해서 반환
 
 int main()
 {
@@ -59,13 +54,21 @@ int main()
       count_bingo(user_bingo, &user_count);
       count_bingo(comp_bingo, &comp_count);
       
-      trial++;
+      
 
       printf("\n");
       
       if (user_count == M || comp_count == M)
          break;
+	
+	  trial++;
    } 
+   
+   printf("---USER BINGO---\n");
+   print_bingo(user_bingo);
+   
+   printf("---COMPUTER BINGO---\n");
+   print_bingo(comp_bingo);
 
    //승자 출력  
    if ((user_count == M) && (comp_count != M))
@@ -82,7 +85,7 @@ int main()
    }
 
    //turn 횟수 출력  
-   printf("\ntrial : %d", trial);
+   printf("\ntrial : %d", trial/2);
 
    return 0;
 }
@@ -140,7 +143,7 @@ int get_number_byMe()   //이미 선택된 숫자를 선택한 경우
 {
    int selected_num;   //사용자가 선택한 숫자  
    
-   while (1)   //user_turn = 1
+   while (1) 
    {
       printf("숫자를 선택하시오 : ");
       scanf("%d", &selected_num);
@@ -168,20 +171,12 @@ int get_number_byCom()
    int i, j;
 
    selected_num = rand() % (N*N) + 1;
-   /*
-   for(i=0; i<N; i++)
-   {
-   		for(j=0; j<N; j++)
-   		{
-   			if(selected_num != bingo[i][j])
-   			{
-   				get_number_byCom();
-			}
-		}
-	} 
-   */
+   
+   if(selected_num)
+   
+   printf("컴퓨터가 선택한 숫자 : %d\n", selected_num);
+   
    return selected_num;
-     
 }
 
 void process_bingo(int bingo[N][N], int selected_num)
@@ -238,6 +233,8 @@ void count_bingo(int bingo[N][N], int* count)
       }
    }
 
+	sum = 0;
+	
    //대각선 빙고 세기  
    for (i = 0; i<N; i++)
    {
@@ -246,12 +243,31 @@ void count_bingo(int bingo[N][N], int* count)
          if (i == j)
          {
             sum += bingo[i][j];
-
-            if (sum == (-1)*N)
-            {
-               (*count)++;
-            }
          }
       }
    } 
+   
+   if (sum == (-1)*N)
+    {
+       (*count)++;
+    }
+    
+    sum=0;
+    
+   //반대 대각선(안됨) 
+   for (i = 0; i<N; i++)
+   {
+      for (j = 0; j<N; j++)
+      {
+         if (i + j == (N-1))
+         {
+            sum += bingo[i][j];
+         }
+      }
+   } 
+   
+   if (sum == (-1)*N)
+    {
+        (*count)++;
+    }
 }
