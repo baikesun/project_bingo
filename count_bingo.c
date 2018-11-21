@@ -1,3 +1,12 @@
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <time.h> 
+
+#include "head.h"
+
+#define N 5 
+#define M 2 
+
 void count_bingo(int bingo[N][N], int* count)
 {
    (*count) = 0;
@@ -36,6 +45,8 @@ void count_bingo(int bingo[N][N], int* count)
       }
    }
 
+	sum = 0;
+	
    //대각선 빙고 세기  
    for (i = 0; i<N; i++)
    {
@@ -44,15 +55,17 @@ void count_bingo(int bingo[N][N], int* count)
          if (i == j)
          {
             sum += bingo[i][j];
-
-            if (sum == (-1)*N)
-            {
-               (*count)++;
-            }
          }
       }
    } 
    
+   if (sum == (-1)*N)
+   {
+       (*count)++;
+   }
+    
+    sum=0;
+    
    //반대 대각선(안됨) 
    for (i = 0; i<N; i++)
    {
@@ -61,12 +74,12 @@ void count_bingo(int bingo[N][N], int* count)
          if (i + j == (N-1))
          {
             sum += bingo[i][j];
-
-            if (sum == (-1)*N)
-            {
-               (*count)++;
-            }
          }
       }
    } 
+   
+   if (sum == (-1)*N)
+   {
+    	(*count)++;
+   }
 }

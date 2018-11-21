@@ -1,3 +1,12 @@
+#include <stdio.h> 
+#include <stdlib.h> 
+#include <time.h> 
+
+#include "head.h"
+
+#define N 5 
+#define M 2 
+
 void process_bingo(int bingo[N][N], int selected_num)
 {
    int i, j;
