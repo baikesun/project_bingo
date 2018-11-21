@@ -5,7 +5,7 @@
 #include "head.h"
 
 #define N 5 
-#define M 2 
+#define M 2
 
 int get_number_byMe()   //이미 선택된 숫자를 선택한 경우  
 {

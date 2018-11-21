@@ -5,7 +5,7 @@
 #include "head.h"
 
 #define N 5 
-#define M 2 
+#define M 2
 
 void count_bingo(int bingo[N][N], int* count)
 {
@@ -66,7 +66,7 @@ void count_bingo(int bingo[N][N], int* count)
     
     sum=0;
     
-   //반대 대각선(안됨) 
+   //반대 대각선
    for (i = 0; i<N; i++)
    {
       for (j = 0; j<N; j++)

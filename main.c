@@ -1,5 +1,5 @@
 #include <stdio.h> 
-#include <stdlib.h> 
+#include <stdlib.h>
 #include <time.h> 
 
 #include "head.h" 
@@ -28,7 +28,7 @@ int main()
    
    int user_turn = 1;   //user와 com의 턴 구분
    
-   while(1)   //user_turn
+   while(1)
    {   
       if (user_turn)
 	  {
@@ -42,7 +42,7 @@ int main()
       }
       else
 	  {
-         selected_num = get_number_byCom();
+         selected_num = get_number_byCom(user_bingo);
          
          user_turn = 1;   //턴 넘기기  
       }
@@ -52,8 +52,6 @@ int main()
 
       count_bingo(user_bingo, &user_count);
       count_bingo(comp_bingo, &comp_count);
-      
-      
 
       printf("\n");
       
